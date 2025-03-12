@@ -67,7 +67,7 @@ elif st.session_state.page == "Demo Machine Learning":
 elif st.session_state.page == "Neural Network":
     st.title("🧠 Neural Network")
     st.write("ขั้นตอนแรกได้ไปหาdata set บนเว็พ kiggle และค้าหาที่ฮิดที่สุด เลยเจอ dataset cat or dogเลยคิดว่าแยกหมากับแมวก็ดูไม่ได้ง่ายขนาดนั้นเพราะมีค่อนข้างหลายสายพันธ์และค่อนข้างต่างกันมาก https://www.kaggle.com/datasets/tongpython/cat-and-dog")
-    st.image("https://img5.pic.in.th/file/secure-sv1/1c2f764fab9cfb22a.png", use_column_width=True)
+   st.image("https://img5.pic.in.th/file/secure-sv1/1c2f764fab9cfb22a.png", width=300, use_container_width=False)
     st.write("และขั้นต่อมาทำการอัพ api ของ kiggle ขึ้น google colab ทำให้โหลดไฟร์zib เข้าได้ไวขึ้น และทำการแตกไฟร์ต่อ")
 
 # 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)

@@ -65,3 +65,32 @@ elif st.session_state.page == "Demo Machine Learning":
 
     if st.button("📌 Predict Price"):
         try:
+            predicted_price = model.predict(input_data)[0]
+            st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
+
+# 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)
+elif st.session_state.page == "Demo Neural Network":
+    try:
+        model = load_model('cat_dog_classifier.h5')
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        st.stop()
+
+    st.title("🐱🐶 Cat vs Dog Classifier")
+    st.write("Upload an image of a cat or dog, and the AI will classify it!")
+
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = image.load_img(uploaded_file, target_size=(150, 150))
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+
+        img_array = image.img_to_array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+        prediction = model.predict(img_array)
+
+        if prediction[0] > 0.5:
+            st.write("**Prediction:** This is a Dog! 🐶")
+        else:
+            st.write("**Prediction:** This is a Cat! 🐱")

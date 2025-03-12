@@ -22,7 +22,7 @@ with col1:
     if st.button("🤖 Machine Learning"):
         change_page("Machine Learning")
 with col2:
-    if st.button("🏡 House Price Prediction in us 🇺🇸"):
+    if st.button("🏡 Demo Machine Learning 🇺🇸"):
         change_page("Demo Machine Learning")
 with col3:
     if st.button("🧠 Neural Network"):

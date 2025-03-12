@@ -5,22 +5,18 @@ import joblib
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
-# สร้างเมนู Sidebar สำหรับเลือกหน้า
-st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("เลือกหน้า", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"])
+# ตั้งค่าหน้าตาของเว็บ
+st.set_page_config(page_title="AI Web App", layout="wide")
 
-# หน้า Machine Learning
-if page == "Machine Learning":
-    st.title("Machine Learning")
+# เมนูแนวนอน (Navigation Bar)
+menu = st.radio("Navigation", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"], horizontal=True)
+
+# 🟢 หน้า Machine Learning
+if menu == "Machine Learning":
+    st.title("📌 Machine Learning")
     st.write("เนื้อหาเกี่ยวกับ Machine Learning...")
-
-# หน้า Neural Network
-elif page == "Neural Network":
-    st.title("Neural Network")
-    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
-
-# หน้า Demo Machine Learning
-elif page == "Demo Machine Learning":
+# 🟡 หน้า Demo Machine Learning
+elif menu == "Demo Machine Learning":
     try:
         model = joblib.load('house_price_model.pkl')
     except Exception as e:
@@ -32,9 +28,9 @@ elif page == "Demo Machine Learning":
     bedrooms = st.number_input("🛏 จำนวนห้องนอน", min_value=1, max_value=10, value=1)
     bathrooms = st.number_input("🛁 จำนวนห้องน้ำ", min_value=1, max_value=10, value=1)
 
+    # เตรียมข้อมูลให้ตรงกับฟีเจอร์ของโมเดล
     model_features = model.feature_names_in_
     input_data = pd.DataFrame(np.zeros((1, len(model_features))), columns=model_features)
-
     input_data.loc[0, 'GrLivArea'] = sqft
     input_data.loc[0, 'BedroomAbvGr'] = bedrooms
     input_data.loc[0, 'FullBath'] = bathrooms
@@ -45,16 +41,21 @@ elif page == "Demo Machine Learning":
             st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
         except Exception as e:
             st.error(f"Prediction failed: {e}")
+# 🔵 หน้า Neural Network
+elif menu == "Neural Network":
+    st.title("🧠 Neural Network")
+    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
 
-# หน้า Demo Neural Network
-elif page == "Demo Neural Network":
+
+# 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)
+elif menu == "Demo Neural Network":
     try:
         model = load_model('cat_dog_classifier.h5')
     except Exception as e:
         st.error(f"Error loading model: {e}")
         st.stop()
 
-    st.title("Cat vs Dog Classifier")
+    st.title("🐱🐶 Cat vs Dog Classifier")
     st.write("Upload an image of a cat or dog, and the AI will classify it!")
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])

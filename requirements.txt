@@ -1,4 +1,6 @@
-streamlit
-tensorflow
-numpy
-pillow
+streamlit==1.32.0
+numpy==1.26.4
+joblib==1.4.2
+scikit-learn==1.5.0  # If using scikit-learn
+tensorflow==2.16.1  # If using TensorFlow
+pillow==10.3.0

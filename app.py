@@ -19,14 +19,14 @@ def change_page(new_page):
 # แสดงปุ่มนำทาง (Navigation Buttons)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    if st.button("📌 Machine Learning"):
+    if st.button("🤖 Machine Learning"):
         change_page("Machine Learning")
 with col2:
+    if st.button("🏡 House Price Prediction in us 🇺🇸"):
+        change_page("Demo Machine Learning")
+with col3:
     if st.button("🧠 Neural Network"):
         change_page("Neural Network")
-with col3:
-    if st.button("🏡 Demo Machine Learning"):
-        change_page("Demo Machine Learning")
 with col4:
     if st.button("🐱🐶 Demo Neural Network"):
         change_page("Demo Neural Network")
@@ -37,12 +37,6 @@ st.markdown("---")  # เส้นคั่นหน้า
 if st.session_state.page == "Machine Learning":
     st.title("📌 Machine Learning")
     st.write("เนื้อหาเกี่ยวกับ Machine Learning...")
-
-# 🔵 หน้า Neural Network
-elif st.session_state.page == "Neural Network":
-    st.title("🧠 Neural Network")
-    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
-
 # 🟡 หน้า Demo Machine Learning
 elif st.session_state.page == "Demo Machine Learning":
     try:
@@ -69,6 +63,11 @@ elif st.session_state.page == "Demo Machine Learning":
             st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
         except Exception as e:
             st.error(f"Prediction failed: {e}")
+# 🔵 หน้า Neural Network
+elif st.session_state.page == "Neural Network":
+    st.title("🧠 Neural Network")
+    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
+
 
 # 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)
 elif st.session_state.page == "Demo Neural Network":

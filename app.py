@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing import image
 st.set_page_config(page_title="AI Web App", layout="wide")
 
 # เมนูแนวนอน (Navigation Bar)
-menu = st.radio("Navigation", ["Machine Learning", "Demo Machine Learning", "Neural Network","Demo Neural Network"], horizontal=True)
+menu = st.radio("", ["Machine Learning", "Demo Machine Learning", "Neural Network","Demo Neural Network"], horizontal=True)
 
 # 🟢 หน้า Machine Learning
 if menu == "Machine Learning":

@@ -35,7 +35,7 @@ st.markdown("---")  # เส้นคั่นหน้า
 
 # 🟢 หน้า Machine Learning
 if st.session_state.page == "Machine Learning":
-    st.title("📌 Machine Learning")
+    st.title("🤖 Machine Learning")
     st.write("เนื้อหาเกี่ยวกับ Machine Learning...")
 # 🟡 หน้า Demo Machine Learning
 elif st.session_state.page == "Demo Machine Learning":

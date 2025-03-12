@@ -23,7 +23,7 @@ elif menu == "Demo Machine Learning":
         st.error(f"Error loading model: {e}")
         st.stop()
 
-    st.title("🏡 House Price Prediction")
+    st.title("🏡 House Price Prediction in us 🇺🇸")
     sqft = st.number_input("🏠 ขนาดพื้นที่ (ตร.ฟุต)", min_value=500, max_value=10000, value=1000)
     bedrooms = st.number_input("🛏 จำนวนห้องนอน", min_value=1, max_value=10, value=1)
     bathrooms = st.number_input("🛁 จำนวนห้องน้ำ", min_value=1, max_value=10, value=1)

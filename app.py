@@ -8,22 +8,50 @@ from tensorflow.keras.preprocessing import image
 # ตั้งค่าหน้าตาของเว็บ
 st.set_page_config(page_title="AI Web App", layout="wide")
 
-# เมนูแนวนอน (Navigation Bar)
-menu = st.radio("", ["Machine Learning", "Demo Machine Learning", "Neural Network","Demo Neural Network"], horizontal=True)
+# ใช้ session_state เพื่อจัดการหน้า
+if "page" not in st.session_state:
+    st.session_state.page = "Machine Learning"
+
+# ฟังก์ชันเปลี่ยนหน้า
+def change_page(new_page):
+    st.session_state.page = new_page
+
+# แสดงปุ่มนำทาง (Navigation Buttons)
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    if st.button("📌 Machine Learning"):
+        change_page("Machine Learning")
+with col2:
+    if st.button("🧠 Neural Network"):
+        change_page("Neural Network")
+with col3:
+    if st.button("🏡 Demo Machine Learning"):
+        change_page("Demo Machine Learning")
+with col4:
+    if st.button("🐱🐶 Demo Neural Network"):
+        change_page("Demo Neural Network")
+
+st.markdown("---")  # เส้นคั่นหน้า
 
 # 🟢 หน้า Machine Learning
-if menu == "Machine Learning":
+if st.session_state.page == "Machine Learning":
     st.title("📌 Machine Learning")
     st.write("เนื้อหาเกี่ยวกับ Machine Learning...")
+
+# 🔵 หน้า Neural Network
+elif st.session_state.page == "Neural Network":
+    st.title("🧠 Neural Network")
+    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
+
 # 🟡 หน้า Demo Machine Learning
-elif menu == "Demo Machine Learning":
+elif st.session_state.page == "Demo Machine Learning":
     try:
         model = joblib.load('house_price_model.pkl')
     except Exception as e:
         st.error(f"Error loading model: {e}")
         st.stop()
 
-    st.title("🏡 House Price Prediction in us 🇺🇸")
+    st.title("🏡 House Price Prediction")
     sqft = st.number_input("🏠 ขนาดพื้นที่ (ตร.ฟุต)", min_value=500, max_value=10000, value=1000)
     bedrooms = st.number_input("🛏 จำนวนห้องนอน", min_value=1, max_value=10, value=1)
     bathrooms = st.number_input("🛁 จำนวนห้องน้ำ", min_value=1, max_value=10, value=1)
@@ -37,37 +65,3 @@ elif menu == "Demo Machine Learning":
 
     if st.button("📌 Predict Price"):
         try:
-            predicted_price = model.predict(input_data)[0]
-            st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
-        except Exception as e:
-            st.error(f"Prediction failed: {e}")
-# 🔵 หน้า Neural Network
-elif menu == "Neural Network":
-    st.title("🧠 Neural Network")
-    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
-
-
-# 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)
-elif menu == "Demo Neural Network":
-    try:
-        model = load_model('cat_dog_classifier.h5')
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        st.stop()
-
-    st.title("🐱🐶 Cat vs Dog Classifier")
-    st.write("Upload an image of a cat or dog, and the AI will classify it!")
-
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        img = image.load_img(uploaded_file, target_size=(150, 150))
-        st.image(img, caption='Uploaded Image', use_column_width=True)
-
-        img_array = image.img_to_array(img) / 255.0
-        img_array = np.expand_dims(img_array, axis=0)
-        prediction = model.predict(img_array)
-
-        if prediction[0] > 0.5:
-            st.write("**Prediction:** This is a Dog! 🐶")
-        else:
-            st.write("**Prediction:** This is a Cat! 🐱")

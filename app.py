@@ -1,29 +1,72 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import joblib
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-import numpy as np
 
-# โหลดโมเดล
-model = load_model('cat_dog_classifier.h5')
+# สร้างเมนู Sidebar สำหรับเลือกหน้า
+st.sidebar.title("Navigation")
+page = st.sidebar.selectbox("เลือกหน้า", ["Machine Learning", "Neural Network", "Demo Machine Learning", "Demo Neural Network"])
 
-# ตั้งค่าหน้าเว็บ
-st.title("Cat vs Dog Classifier")
-st.write("Upload an image of a cat or dog, and the AI will classify it!")
+# หน้า Machine Learning
+if page == "Machine Learning":
+    st.title("Machine Learning")
+    st.write("เนื้อหาเกี่ยวกับ Machine Learning...")
 
-# อัปโหลดภาพ
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-if uploaded_file is not None:
-    # แสดงภาพที่อัปโหลด
-    img = image.load_img(uploaded_file, target_size=(150, 150))
-    st.image(img, caption='Uploaded Image', use_column_width=True)
+# หน้า Neural Network
+elif page == "Neural Network":
+    st.title("Neural Network")
+    st.write("เนื้อหาเกี่ยวกับ Neural Network...")
 
-    # แปลงภาพเป็น array และทำนาย
-    img_array = image.img_to_array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
-    prediction = model.predict(img_array)
+# หน้า Demo Machine Learning
+elif page == "Demo Machine Learning":
+    try:
+        model = joblib.load('house_price_model.pkl')
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        st.stop()
 
-    # แสดงผลลัพธ์
-    if prediction[0] > 0.5:
-        st.write("**Prediction:** This is a Dog! 🐶")
-    else:
-        st.write("**Prediction:** This is a Cat! 🐱")
+    st.title("🏡 House Price Prediction")
+    sqft = st.number_input("🏠 ขนาดพื้นที่ (ตร.ฟุต)", min_value=500, max_value=10000, value=1000)
+    bedrooms = st.number_input("🛏 จำนวนห้องนอน", min_value=1, max_value=10, value=1)
+    bathrooms = st.number_input("🛁 จำนวนห้องน้ำ", min_value=1, max_value=10, value=1)
+
+    model_features = model.feature_names_in_
+    input_data = pd.DataFrame(np.zeros((1, len(model_features))), columns=model_features)
+
+    input_data.loc[0, 'GrLivArea'] = sqft
+    input_data.loc[0, 'BedroomAbvGr'] = bedrooms
+    input_data.loc[0, 'FullBath'] = bathrooms
+
+    if st.button("📌 Predict Price"):
+        try:
+            predicted_price = model.predict(input_data)[0]
+            st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
+
+# หน้า Demo Neural Network
+elif page == "Demo Neural Network":
+    try:
+        model = load_model('cat_dog_classifier.h5')
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        st.stop()
+
+    st.title("Cat vs Dog Classifier")
+    st.write("Upload an image of a cat or dog, and the AI will classify it!")
+
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = image.load_img(uploaded_file, target_size=(150, 150))
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+
+        img_array = image.img_to_array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+        prediction = model.predict(img_array)
+
+        if prediction[0] > 0.5:
+            st.write("**Prediction:** This is a Dog! 🐶")
+        else:
+            st.write("**Prediction:** This is a Cat! 🐱")

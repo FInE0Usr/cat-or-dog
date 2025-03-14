@@ -181,7 +181,7 @@ if st.session_state.page == "Machine Learning":
         
         """
     )
-    st.image("https://img2.pic.in.th/pic/Screenshot-132f9286c4ce644a44.jpg", width=600, use_container_width=False)
+    st.image("https://img5.pic.in.th/file/secure-sv1/Screenshot-13.jpg", width=600, use_container_width=False)
     st.write(
         """
         **ทำนายราคาบ้านด้วยโมเดลที่ฝึกไว้** \n

@@ -192,10 +192,16 @@ elif st.session_state.page == "Demo Machine Learning":
         st.error(f"Error loading model: {e}")
         st.stop()
 
-    st.title("🏡 House Price Prediction in us 🇺🇸 ")
+    st.title("🏡 House Price Prediction in US 🇺🇸 ")
+
     sqft = st.number_input("🏠 ขนาดพื้นที่ (ตร.ฟุต)", min_value=500, max_value=10000, value=1000)
     bedrooms = st.number_input("🛏 จำนวนห้องนอน", min_value=1, max_value=10, value=1)
     bathrooms = st.number_input("🛁 จำนวนห้องน้ำ", min_value=1, max_value=10, value=1)
+
+    # ตรวจสอบเงื่อนไขขั้นต่ำ
+    if sqft < 500 or bedrooms < 1 or bathrooms < 1:
+        st.error("⚠️ ข้อมูลไม่ถูกต้อง: ขนาดพื้นที่ต้องไม่น้อยกว่า 500 ตร.ฟุต, ห้องน้ำต้องไม่น้อยกว่า 1 ห้อง, ห้องนอนต้องไม่น้อยกว่า 1 ห้อง")
+        st.stop()
 
     # เตรียมข้อมูลให้ตรงกับฟีเจอร์ของโมเดล
     model_features = model.feature_names_in_
@@ -210,6 +216,7 @@ elif st.session_state.page == "Demo Machine Learning":
             st.success(f"🏡 ราคาบ้านที่คาดการณ์: ${predicted_price:,.2f}")
         except Exception as e:
             st.error(f"Prediction failed: {e}")
+
 # 🔵 หน้า Neural Network
 elif st.session_state.page == "Neural Network":
     st.title("🧠 Neural Network")

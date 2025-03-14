@@ -220,136 +220,27 @@ elif st.session_state.page == "Demo Machine Learning":
 
 # 🔵 หน้า Neural Network
 elif st.session_state.page == "Neural Network":
-    # Create a stylish header section
-    st.markdown("""
-    <div style="background-color:#f0f8ff; padding:10px; border-radius:10px; border-left:5px solid #4682B4;">
-        <h1 style="color:#4682B4; text-align:center;">🧠 Neural Network - Cat vs Dog Classification</h1>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Introduction with nicer formatting
-    st.markdown("""
-    ### 📊 Project Overview
-    สำหรับโปรเจคนี้ ผมได้พัฒนาโมเดล Neural Network เพื่อแยกแยะภาพระหว่างหมาและแมว
-    """)
-    
-    # Data Collection Section
-    st.markdown("## 🔍 Step 1: ค้นหาและเลือก Dataset")
-    st.markdown("""
-    ขั้นตอนแรกได้ไปหา dataset บนเว็บ Kaggle และค้นหาชุดข้อมูลที่นิยม จึงเจอ dataset "Cat or Dog" 
-    การแยกภาพหมากับแมวเป็นงานที่น่าสนใจเพราะมีหลากหลายสายพันธุ์และมีความแตกต่างที่หลากหลาย
-    """)
-    
-    # Create columns for better layout
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.image("https://img5.pic.in.th/file/secure-sv1/1c2f764fab9cfb22a.png", use_column_width=True)
-    with col2:
-        st.markdown("""
-        **Dataset Source:**
-        [Kaggle: Cat and Dog Dataset](https://www.kaggle.com/datasets/tongpython/cat-and-dog)
-        
-        **Features:**
-        - มีภาพหมาและแมวหลากหลายสายพันธุ์
-        - เหมาะสำหรับการสร้าง Binary Classifier
-        """)
-    
-    # Data Preparation Section with expander for technical details
-    st.markdown("## 🛠️ Step 2: เตรียมข้อมูล")
-    
-    with st.expander("ขั้นตอนการเตรียมข้อมูล", expanded=True):
-        st.markdown("""
-        ได้ทำการอัพโหลด API ของ Kaggle ขึ้น Google Colab เพื่อให้สามารถดาวน์โหลดและแตกไฟล์ได้อย่างรวดเร็ว
-        """)
-        st.image("https://img5.pic.in.th/file/secure-sv1/27d9df771fce3f3ad.png", width=600, use_container_width=False)
-    
-    # Model Creation Section
-    st.markdown("## 🧩 Step 3: การเตรียมข้อมูลภาพ")
-    st.markdown("""
-    ใช้ `ImageDataGenerator` จาก TensorFlow เพื่อเตรียมข้อมูลภาพสำหรับการฝึกโมเดล Machine Learning 
-    โดยเฉพาะการจำแนกภาพ (Image Classification) แบบ Binary Classification
-    """)
-    
-    # Add code highlighting using markdown
-    with st.expander("โค้ดการเตรียมข้อมูลภาพ", expanded=False):
-        st.code("""
-        train_datagen = ImageDataGenerator(rescale=1./255,
-                                        shear_range=0.2,
-                                        zoom_range=0.2,
-                                        horizontal_flip=True)
-        test_datagen = ImageDataGenerator(rescale=1./255)
-        
-        training_set = train_datagen.flow_from_directory('training_set',
-                                                      target_size=(64, 64),
-                                                      batch_size=32,
-                                                      class_mode='binary')
-        """, language="python")
-    
+    st.title("🧠 Neural Network")
+    st.write("ขั้นตอนแรกได้ไปหาdata set บนเว็พ kiggle และค้าหาที่ฮิดที่สุด เลยเจอ dataset cat or dogเลยคิดว่าแยกหมากับแมวก็ดูไม่ได้ง่ายขนาดนั้นเพราะมีค่อนข้างหลายสายพันธ์และค่อนข้างต่างกันมาก https://www.kaggle.com/datasets/tongpython/cat-and-dog")
+    st.image("https://img5.pic.in.th/file/secure-sv1/1c2f764fab9cfb22a.png", width=600, use_container_width=False)
+    st.write("และขั้นต่อมาทำการอัพ api ของ kiggle ขึ้น google colab ทำให้โหลดไฟร์zib เข้าได้ไวขึ้น และทำการแตกไฟร์ต่อ")
+    st.image("https://img5.pic.in.th/file/secure-sv1/27d9df771fce3f3ad.png", width=600, use_container_width=False)
+    st.write("ใช้ ImageDataGenerator จาก TensorFlow เพื่อเตรียมข้อมูลภาพสำหรับการฝึกโมเดล Machine Learning โดยเฉพาะการจำแนกภาพ (Image Classification) แบบ Binary Classification")
     st.image("https://img2.pic.in.th/pic/33d29ee08dd6fd275.png", width=600, use_container_width=False)
-    
-    # Model Architecture Section
-    st.markdown("## 🏗️ Step 4: สร้างโมเดล CNN")
-    
-    # Create two columns for better layout
-    col1, col2 = st.columns([3, 2])
-    
-    with col1:
-        st.markdown("""
-        สร้างโมเดล Convolutional Neural Network (CNN) สำหรับงาน Binary Classification:
-        """)
-        st.image("https://img2.pic.in.th/pic/418afd8ea65b7e17a.png", width=600, use_container_width=False)
-    
-    with col2:
-        # Use a nice box for architecture details
-        st.markdown("""
-        <div style="background-color:#f5f5f5; padding:15px; border-radius:5px; border:1px solid #ddd;">
-            <h4>📋 โครงสร้างโมเดล</h4>
-            <ul>
-                <li>3 ชั้น Convolutional สำหรับดึง Feature จากภาพ</li>
-                <li>MaxPooling สำหรับลดขนาด Feature Map</li>
-                <li>2 ชั้น Fully Connected สำหรับการจำแนกข้อมูล</li>
-                <li>Sigmoid Activation สำหรับให้ผลลัพธ์เป็นความน่าจะเป็น (0 หรือ 1)</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Training Section
-    st.markdown("## 🔄 Step 5: การฝึกโมเดล")
-    st.markdown("โค้ดสำหรับการฝึกโมเดล (Training model):")
+    st.write("สร้างโมเดล Convolutional Neural Network (CNN) สำหรับงาน Binary Classification ")
+    st.write("3 ชั้น สำหรับดึง Feature จากภาพ")
+    st.write("ลดขนาด Feature Map")
+    st.write("2 ชั้น สำหรับการจำแนกข้อมูล")
+    st.write("ใช้ Sigmoid Activation เพื่อให้ผลลัพธ์เป็นความน่าจะเป็น (0 หรือ 1)ทำให้โมเดลนี้พร้อมสำหรับการฝึกด้วยข้อมูลภาพที่เตรียมไว้")
+    st.image("https://img2.pic.in.th/pic/418afd8ea65b7e17a.png", width=600, use_container_width=False)
+    st.write("โค้ดนี้ใช้สำหรับ ฝึกโมเดล (Training model)")
     st.image("https://img2.pic.in.th/pic/Screenshot-from-2025-03-12-23-45-52.png", width=600, use_container_width=False)
-    
-    # Results Section with tabs
-    st.markdown("## 📊 Step 6: ผลลัพธ์และการวิเคราะห์")
-    
-    tab1, tab2 = st.tabs(["📈 Training Results", "🧪 Model Testing"])
-    
-    with tab1:
-        st.markdown("""
-        กราฟแสดงการเปลี่ยนแปลงของ Loss และ Accuracy ระหว่างการฝึก ช่วยให้เราสามารถประเมินได้ว่าโมเดลมีการ Overfitting หรือไม่
-        """)
-        st.image("https://img2.pic.in.th/pic/6491366b23e31efd5.png", width=600, use_container_width=False)
-        st.markdown("""
-        <div style="background-color:#e7f7e7; padding:10px; border-radius:5px; border-left:3px solid green;">
-            <p><strong>การวิเคราะห์:</strong> จากกราฟจะเห็นว่าโมเดลเรียนรู้ได้ดี ไม่มีการ overfitting ที่ชัดเจน เนื่องจาก validation accuracy และ training accuracy มีค่าใกล้เคียงกัน</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with tab2:
-        st.markdown("ทดสอบโมเดลกับข้อมูลใหม่เพื่อตรวจสอบความแม่นยำในการแยกแยะหมาและแมว")
-        st.image("https://img5.pic.in.th/file/secure-sv1/810e34025f882f14e.png", width=600, use_container_width=False)
-        st.markdown("""
-        โค้ดนี้ใช้สำหรับทดสอบว่าโมเดลสามารถแยกแยะภาพหมาและแมวได้อย่างถูกต้องหรือไม่ และทำการบันทึกโมเดลในรูปแบบไฟล์ .h5
-        """)
-    
-    # Conclusion Section
-    st.markdown("## ✅ สรุป")
-    st.markdown("""
-    <div style="background-color:#f0f0f8; padding:15px; border-radius:8px; border:1px solid #ccccf0;">
-        <p>โครงการนี้ได้พัฒนาโมเดล CNN สำหรับการแยกแยะภาพหมาและแมว โดยใช้ชุดข้อมูลจาก Kaggle</p>
-        <p>โมเดลมีความแม่นยำในการทำนายที่ดี และไม่มีปัญหา overfitting ที่ชัดเจน</p>
-        <p>โมเดลถูกบันทึกในรูปแบบ .h5 สำหรับการนำไปใช้งานในอนาคต</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.write("codeจะplotกราฟจะช่วยให้เห็นการเปลี่ยนแปลงของ Loss และ Accuracy ระหว่างการฝึก และตรวจสอบว่าโมเดล Overfitting หรือไม่")
+    st.image("https://img2.pic.in.th/pic/6491366b23e31efd5.png", width=600, use_container_width=False)
+    st.write("จากรูปโมเดลค่อนข้างเรียนรู้ได้ดี ไม่ overfittingจนเกินไป")
+    st.image("https://img5.pic.in.th/file/secure-sv1/810e34025f882f14e.png", width=600, use_container_width=False)
+    st.write("codeนี้ใช้ลองทดสอบว่าทำงานได้ไหมแยกหมาแมวเบื่องต้นได้ไหมและ savemodel ใน .h57")
+
 # 🔴 หน้า Demo Neural Network (Cat vs Dog Classifier)
 elif st.session_state.page == "Demo Neural Network":
     try:
